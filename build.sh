@@ -4,12 +4,13 @@ project="Midsummer Jam"
 
 echo "Attempting to build $project for OS X"
 echo "$(pwd)"
-/Applications/Unity/Unity.app/Contents/MacOS/Unity 
-  -batchmode 
-  -silent-crashes 
-  -logFile $(pwd)/unity.log 
-  -projectPath $(pwd)/Unity 
-  -buildOSXUniversalPlayer "$(pwd)/Build/osx/$project.app" 
+/Applications/Unity/Unity.app/Contents/MacOS/Unity \
+  -batchmode \
+  -nographics \
+  -silent-crashes \
+  -logFile $(pwd)/unity.log \
+  -projectPath "$(pwd)/Unity" \
+  -buildOSXUniversalPlayer "$(pwd)/Build/osx/$project.app" \
   -quit
 
 echo 'Logs from build'
