@@ -19,11 +19,16 @@ public class CloudManager : MonoBehaviour
 		KeyCode.I,
 		KeyCode.O,
 	};
+
+	private GameObject[] objects;
+
 	// Use this for initialization
 	void Start () 
 	{
 
 		int counter = 0;
+
+		objects = new GameObject[CloudEffects.Count]; 
 
 		// Check that all the Effects are valid
 		foreach(var effect in CloudEffects)
@@ -34,10 +39,12 @@ public class CloudManager : MonoBehaviour
 			} 
 			else 
 			{
-				effect.effectHolder = Instantiate(effect.ParticleSystem);
-				effect.effectHolder.transform.position = GetPosition (counter, CloudEffects.Count);
-				effect.effectHolder.AddComponent<AudioSource> ();
+				objects [counter] = Instantiate (effect.ParticleSystem);
+				objects[counter].transform.position = GetPosition (counter, CloudEffects.Count);
 				effect.KeyToActivate = keys[counter];
+
+				// effect.effectHolder.AddComponent<AudioSource> ();
+
 			}
 
 			counter++;
@@ -54,27 +61,27 @@ public class CloudManager : MonoBehaviour
 		if (Input.anyKeyDown) 
 		{
 
-			foreach(var effect in CloudEffects)
+			for(int i = 0; i < objects.Length; i++)
 			{
-				if(Input.GetKeyDown(effect.KeyToActivate))
+				if(Input.GetKeyDown(keys[i]))
 				{
-					effect.effectHolder.GetComponent<ParticleSystem>().Play();
+					objects[i].GetComponent<ParticleSystem>().Play();
 				}
 			}
+
 		}
 
 		// if an input is released check what effects should be deactivated
 
-		foreach (var effect in CloudEffects) 
+		for(int i = 0; i < objects.Length; i++)
 		{
-			if(effect.effectHolder.GetComponent<ParticleSystem>().isPlaying)
+			if(objects[i].GetComponent<ParticleSystem>().isPlaying)
 			{
-				if (!Input.GetKey (effect.KeyToActivate)) 
+				if (!Input.GetKey (keys[i])) 
 				{
-					effect.effectHolder.GetComponent<ParticleSystem>().Stop ();
+					objects[i].GetComponent<ParticleSystem>().Stop ();
 				}
 			}
-
 		}
 
 	}
