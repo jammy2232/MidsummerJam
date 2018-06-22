@@ -8,7 +8,7 @@ echo "$(pwd)"
   -batchmode 
   -silent-crashes 
   -logFile $(pwd)/unity.log 
-  -projectPath $(pwd) 
+  -projectPath $(pwd)/Unity 
   -buildOSXUniversalPlayer "$(pwd)/Build/osx/$project.app" 
   -quit
 
