@@ -20,35 +20,22 @@ public class CloudManager : MonoBehaviour
 		KeyCode.O,
 	};
 
-	private GameObject[] objects;
+	private CloudStream[] objects;
 
 	// Use this for initialization
 	void Start () 
 	{
+		// Create a array to hold the number of possible effects
+		objects = new CloudStream[CloudEffects.Count]; 
 
+		// temp counter
 		int counter = 0;
-
-		objects = new GameObject[CloudEffects.Count]; 
 
 		// Check that all the Effects are valid
 		foreach(var effect in CloudEffects)
 		{
-			if (!effect.ParticleSystem.GetComponent<ParticleSystem> ()) 
-			{
-				Debug.Log (effect.name + " has NO Particle System");
-			} 
-			else 
-			{
-				objects [counter] = Instantiate (effect.ParticleSystem);
-				objects[counter].transform.position = GetPosition (counter, CloudEffects.Count);
-				effect.KeyToActivate = keys[counter];
-
-				// effect.effectHolder.AddComponent<AudioSource> ();
-
-			}
-
+			objects [counter] = effect.SpawnEffect (GetPosition (counter, CloudEffects.Count));
 			counter++;
-				
 		}
 
 	}
@@ -65,7 +52,7 @@ public class CloudManager : MonoBehaviour
 			{
 				if(Input.GetKeyDown(keys[i]))
 				{
-					objects[i].GetComponent<ParticleSystem>().Play();
+					objects [i].Play ();
 				}
 			}
 
@@ -79,7 +66,7 @@ public class CloudManager : MonoBehaviour
 			{
 				if (!Input.GetKey (keys[i])) 
 				{
-					objects[i].GetComponent<ParticleSystem>().Stop ();
+					objects [i].Stop();
 				}
 			}
 		}

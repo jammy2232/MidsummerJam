@@ -13,10 +13,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParticleSystem: {fileID: 1785160652861760, guid: 3da23577989e54bbcb41338f79f2e422,
     type: 2}
-  KeyToActivate: 119
+  musicMixer: {fileID: 243401376507561860, guid: 5d2923c33df2a4d14a3f7be3a9ce4528,
+    type: 2}
   musicClip: {fileID: 8300000, guid: c068eaa9b357e49be8c8a085354a2229, type: 3}
-  pitch: -0.28
-  tempo: 0
-  fadeIn: 0
-  fadeOut: 0
-  effectHolder: {fileID: 0}
+  soundMixer: {fileID: 243742144207163408, guid: 5d2923c33df2a4d14a3f7be3a9ce4528,
+    type: 2}
+  soundsClip: {fileID: 8300000, guid: c068eaa9b357e49be8c8a085354a2229, type: 3}
