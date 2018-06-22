@@ -23,6 +23,8 @@ public class CloudManager : MonoBehaviour
 	private CloudStream[] objects;
 	private GlobalWind windEffect;
 	public float windHeight = 2.5f;
+	public float windDirection = -1.0f;
+
 	// Use this for initialization
 	void Start() 
 	{
@@ -73,6 +75,7 @@ public class CloudManager : MonoBehaviour
 			}
 		}
 
+		windEffect.windDirection = windDirection;
 		windEffect.windHeight = windHeight;
 		windEffect.Update();
 

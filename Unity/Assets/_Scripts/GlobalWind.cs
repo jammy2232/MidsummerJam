@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GlobalWind {
+public class GlobalWind 
+{
 
+	public float windHeight = 10.5f;
+	public float windDirection = 10.5f;
+	public CloudStream[] objects;
+
+	// Constructor
 	public GlobalWind(CloudStream[] _objects)
 	{
 		objects = _objects;
 	}
-
-	public float windHeight = 10.5f;
-	static public CloudStream[] objects;
-
+		
 	// Update is called once per frame
 	public void Update () 
 	{
@@ -19,7 +22,9 @@ public class GlobalWind {
 		// Blow some wind at a predefined height
 		foreach (CloudStream obj in objects)
 		{
+			
 			ParticleSystem.Particle[] streamsParticles = new ParticleSystem.Particle[obj.particles.main.maxParticles];
+
 			// GetParticles is allocation free because we reuse the streamsParticles buffer between updates
 			int numParticlesAlive = obj.particles.GetParticles(streamsParticles);
 
@@ -28,12 +33,13 @@ public class GlobalWind {
 			{
 				if (streamsParticles[i].position.z > windHeight)
 				{
-					streamsParticles[i].velocity += Vector3.right * 0.5f;
+					streamsParticles[i].velocity += new Vector3(Mathf.Clamp(windDirection, -1.0f, 1.0f), 0.0f, 0.0f) * 0.5f;
 				}
 			}
 
 			// Apply the particle changes to the particle system
 			obj.particles.SetParticles(streamsParticles, numParticlesAlive);
+
 		}
 	}
 }
