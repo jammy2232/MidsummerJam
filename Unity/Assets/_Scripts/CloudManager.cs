@@ -23,7 +23,6 @@ public class CloudManager : MonoBehaviour
 	private CloudStream[] objects;
 	private GlobalWind windEffect;
 	public float windHeight = 2.5f;
-
 	// Use this for initialization
 	void Start() 
 	{
@@ -41,20 +40,19 @@ public class CloudManager : MonoBehaviour
 		}
 
 		windEffect = new GlobalWind(objects);
-
 	}
-		
+
 	// Update is called once per frame
-	void Update() 
+	void Update()
 	{
 
 		// if an input is fired check what effects should be activated
-		if (Input.anyKeyDown) 
+		if (Input.anyKeyDown)
 		{
 
-			for(int i = 0; i < objects.Length; ++i)
+			for (int i = 0; i < objects.Length; ++i)
 			{
-				if(Input.GetKeyDown(keys[i]))
+				if (Input.GetKeyDown(keys[i]))
 				{
 					objects[i].Play();
 				}
@@ -64,11 +62,11 @@ public class CloudManager : MonoBehaviour
 
 		// if an input is released check what effects should be deactivated
 
-		for(int i = 0; i < objects.Length; ++i)
+		for (int i = 0; i < objects.Length; ++i)
 		{
-			if(objects[i].musicSource.isPlaying)
+			if (objects[i].musicSource.isPlaying)
 			{
-				if (!Input.GetKey(keys[i])) 
+				if (!Input.GetKey(keys[i]))
 				{
 					objects[i].Stop();
 				}
@@ -78,6 +76,40 @@ public class CloudManager : MonoBehaviour
 		windEffect.windHeight = windHeight;
 		windEffect.Update();
 
+		float[] spectrum = new float[256];
+
+		AudioListener.GetSpectrumData(spectrum, 0, FFTWindow.Rectangular);
+
+		int[] largest =
+		{
+			0,
+			0,
+			0
+		};
+		float[] large_f =
+		{
+			0.0f,
+			0.0f,
+			0.0f
+		};
+		for (int j = 0; j < 3; ++j)
+		{
+			for (int i = j * 256 / 3; i < (j + 1) * 256 / 3; ++i)
+			{
+				if (large_f[j] < spectrum[i])
+				{
+					largest[j] = i;
+					large_f[j] = spectrum[i];
+				}
+			}
+		}
+		
+		Color newColour = new Color(largest[0] / 10.0f, largest[1] / 10.0f, largest[2] / 10.0f, 1.0f);
+		foreach (var obj in objects)
+		{
+			var main = obj.particles.main;
+			main.startColor = newColour;
+		}
 	}
 
 
