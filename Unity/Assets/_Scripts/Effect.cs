@@ -13,6 +13,7 @@ public class Effect : ScriptableObject {
 	// References to the music item this effect will play
 	[Header("Audio Effects")]
 	public AudioMixerGroup musicMixer;
+	public AudioMixerSnapshot RequiredSnapShot;
 	public AudioClip musicClip;
 	public AudioMixerGroup soundMixer;
 	public AudioClip soundsClip;
@@ -32,9 +33,6 @@ public class Effect : ScriptableObject {
 
 		// Position it 
 		newEffect.transform.position = SpawnLocation;
-
-		// Add the Controller Script to the Particle System
-		// TODO Create Control Script?
 
 		// Add and assign the Audio Parameters 
 
@@ -56,7 +54,8 @@ public class Effect : ScriptableObject {
 
 		// Add a CloudSteamComponent and set it up
 		newEffect.AddComponent<CloudStream>();
-		newEffect.GetComponent<CloudStream> ().Init();
+		newEffect.GetComponent<CloudStream>().snapshot = RequiredSnapShot;
+		newEffect.GetComponent<CloudStream>().Init();
 
 		// Return the gameObject Reference 
 		return newEffect.GetComponent<CloudStream>();

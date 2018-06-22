@@ -305,7 +305,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CloudEffects:
   - {fileID: 11400000, guid: d31296b2a352f41b386b86d068dd5fea, type: 2}
-  - {fileID: 11400000, guid: d31296b2a352f41b386b86d068dd5fea, type: 2}
+  - {fileID: 11400000, guid: 5a34cf11db4b14502a3bd05711c248ae, type: 2}
   - {fileID: 11400000, guid: d31296b2a352f41b386b86d068dd5fea, type: 2}
   - {fileID: 11400000, guid: d31296b2a352f41b386b86d068dd5fea, type: 2}
   - {fileID: 11400000, guid: d31296b2a352f41b386b86d068dd5fea, type: 2}
