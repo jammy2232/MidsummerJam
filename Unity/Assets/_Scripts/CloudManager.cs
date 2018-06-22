@@ -21,9 +21,9 @@ public class CloudManager : MonoBehaviour
 	};
 
 	private CloudStream[] objects;
-
+	GlobalWind windEffect;
 	// Use this for initialization
-	void Start () 
+	void Start() 
 	{
 		// Create a array to hold the number of possible effects
 		objects = new CloudStream[CloudEffects.Count]; 
@@ -34,15 +34,16 @@ public class CloudManager : MonoBehaviour
 		// Check that all the Effects are valid
 		foreach(var effect in CloudEffects)
 		{
-			objects [counter] = effect.SpawnEffect (GetPosition (counter, CloudEffects.Count));
+			objects [counter] = effect.SpawnEffect(GetStartParticlePosition(counter, CloudEffects.Count));
 			counter++;
 		}
 
+		windEffect = new GlobalWind(objects);
 	}
 
-	public float windHeight = 10.5f;
+	public float windHeight = 2.5f;
 	// Update is called once per frame
-	void Update () 
+	void Update() 
 	{
 
 		// if an input is fired check what effects should be activated
@@ -53,7 +54,7 @@ public class CloudManager : MonoBehaviour
 			{
 				if(Input.GetKeyDown(keys[i]))
 				{
-					objects [i].Stop();
+					objects[i].Stop();
 				}
 			}
 
@@ -67,35 +68,13 @@ public class CloudManager : MonoBehaviour
 			{
 				if (!Input.GetKey(keys[i])) 
 				{
-					objects [i].Play();
+					objects[i].Play();
 				}
 			}
 		}
 
-		foreach (CloudStream obj in objects)
-		{
-			ParticleSystem.Particle[] m_Particles = new ParticleSystem.Particle[obj.particles.main.maxParticles];
-			// GetParticles is allocation free because we reuse the m_Particles buffer between updates
-			int numParticlesAlive = obj.particles.GetParticles(m_Particles);
-
-			//windHeight += 0.005f;
-			//if (windHeight > 10.0f)
-			//{
-			//	windHeight = 2.5f;
-			//}
-
-			// Change only the particles that are alive
-			for (int i = 0; i < numParticlesAlive; i++)
-			{
-				if (m_Particles[i].position.z > windHeight)
-				{
-					m_Particles[i].velocity += Vector3.right * 0.5f;
-				}
-			}
-
-			// Apply the particle changes to the particle system
-			obj.particles.SetParticles(m_Particles, numParticlesAlive);
-		}
+		windEffect.windHeight = windHeight;
+		windEffect.Update();
 	}
 
 

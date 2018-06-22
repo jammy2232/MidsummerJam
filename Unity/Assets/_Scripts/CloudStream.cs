@@ -28,8 +28,8 @@ public class CloudStream : MonoBehaviour
 		
 		if (!particles.isPlaying)
 		{
-			particles.Play ();
-			musicSource.Play ();
+			particles.Play();
+			musicSource.Play();
 			soundSource.Play();
 		}
 
@@ -41,16 +41,16 @@ public class CloudStream : MonoBehaviour
 
 		if (particles.isPlaying)
 		{
-			particles.Stop ();
-			musicSource.Stop ();
-			soundSource.Stop ();
+			particles.Stop();
+			musicSource.Stop();
+			soundSource.Stop();
 		}
 
 	}
 
 
 	// Update is called once per frame
-	void Update () 
+	void Update() 
 	{
 		
 	}
