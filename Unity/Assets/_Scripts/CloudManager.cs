@@ -21,9 +21,9 @@ public class CloudManager : MonoBehaviour
 	};
 
 	private CloudStream[] objects;
-
+	GlobalWind windEffect;
 	// Use this for initialization
-	void Start () 
+	void Start() 
 	{
 		// Create a array to hold the number of possible effects
 		objects = new CloudStream[CloudEffects.Count]; 
@@ -34,25 +34,27 @@ public class CloudManager : MonoBehaviour
 		// Check that all the Effects are valid
 		foreach(var effect in CloudEffects)
 		{
-			objects [counter] = effect.SpawnEffect (GetPosition (counter, CloudEffects.Count));
+			objects [counter] = effect.SpawnEffect(GetStartParticlePosition(counter, CloudEffects.Count));
 			counter++;
 		}
 
+		windEffect = new GlobalWind(objects);
 	}
-	
+
+	public float windHeight = 2.5f;
 	// Update is called once per frame
-	void Update () 
+	void Update() 
 	{
 
 		// if an input is fired check what effects should be activated
 		if (Input.anyKeyDown) 
 		{
 
-			for(int i = 0; i < objects.Length; i++)
+			for(int i = 0; i < objects.Length; ++i)
 			{
 				if(Input.GetKeyDown(keys[i]))
 				{
-					objects [i].Play ();
+					objects[i].Stop();
 				}
 			}
 
@@ -60,22 +62,24 @@ public class CloudManager : MonoBehaviour
 
 		// if an input is released check what effects should be deactivated
 
-		for(int i = 0; i < objects.Length; i++)
+		for(int i = 0; i < objects.Length; ++i)
 		{
-			if(objects[i].GetComponent<ParticleSystem>().isPlaying)
+			if(objects[i].GetComponent<ParticleSystem>().isStopped)
 			{
-				if (!Input.GetKey (keys[i])) 
+				if (!Input.GetKey(keys[i])) 
 				{
-					objects [i].Stop();
+					objects[i].Play();
 				}
 			}
 		}
 
+		windEffect.windHeight = windHeight;
+		windEffect.Update();
 	}
 
 
 	// Function to return the position of a particle system based the number of systems and it's place in the list
-	Vector3 GetPosition(int position, int totalNumberofSystems)
+	Vector3 GetStartParticlePosition(int position, int totalNumberofSystems)
 	{
 
 		// Get the main Camerea W value
