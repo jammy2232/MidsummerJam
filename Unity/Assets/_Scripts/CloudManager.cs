@@ -39,7 +39,8 @@ public class CloudManager : MonoBehaviour
 		}
 
 	}
-	
+
+	public float windHeight = 10.5f;
 	// Update is called once per frame
 	void Update () 
 	{
@@ -48,11 +49,11 @@ public class CloudManager : MonoBehaviour
 		if (Input.anyKeyDown) 
 		{
 
-			for(int i = 0; i < objects.Length; i++)
+			for(int i = 0; i < objects.Length; ++i)
 			{
 				if(Input.GetKeyDown(keys[i]))
 				{
-					objects [i].Play ();
+					objects [i].Stop();
 				}
 			}
 
@@ -60,22 +61,46 @@ public class CloudManager : MonoBehaviour
 
 		// if an input is released check what effects should be deactivated
 
-		for(int i = 0; i < objects.Length; i++)
+		for(int i = 0; i < objects.Length; ++i)
 		{
-			if(objects[i].GetComponent<ParticleSystem>().isPlaying)
+			if(objects[i].GetComponent<ParticleSystem>().isStopped)
 			{
-				if (!Input.GetKey (keys[i])) 
+				if (!Input.GetKey(keys[i])) 
 				{
-					objects [i].Stop();
+					objects [i].Play();
 				}
 			}
 		}
 
+		foreach (CloudStream obj in objects)
+		{
+			ParticleSystem.Particle[] m_Particles = new ParticleSystem.Particle[obj.particles.main.maxParticles];
+			// GetParticles is allocation free because we reuse the m_Particles buffer between updates
+			int numParticlesAlive = obj.particles.GetParticles(m_Particles);
+
+			//windHeight += 0.005f;
+			//if (windHeight > 10.0f)
+			//{
+			//	windHeight = 2.5f;
+			//}
+
+			// Change only the particles that are alive
+			for (int i = 0; i < numParticlesAlive; i++)
+			{
+				if (m_Particles[i].position.z > windHeight)
+				{
+					m_Particles[i].velocity += Vector3.right * 0.5f;
+				}
+			}
+
+			// Apply the particle changes to the particle system
+			obj.particles.SetParticles(m_Particles, numParticlesAlive);
+		}
 	}
 
 
 	// Function to return the position of a particle system based the number of systems and it's place in the list
-	Vector3 GetPosition(int position, int totalNumberofSystems)
+	Vector3 GetStartParticlePosition(int position, int totalNumberofSystems)
 	{
 
 		// Get the main Camerea W value
