@@ -21,7 +21,9 @@ public class CloudManager : MonoBehaviour
 	};
 
 	private CloudStream[] objects;
-	GlobalWind windEffect;
+	private GlobalWind windEffect;
+	public float windHeight = 2.5f;
+
 	// Use this for initialization
 	void Start() 
 	{
@@ -39,9 +41,9 @@ public class CloudManager : MonoBehaviour
 		}
 
 		windEffect = new GlobalWind(objects);
-	}
 
-	public float windHeight = 2.5f;
+	}
+		
 	// Update is called once per frame
 	void Update() 
 	{
@@ -54,7 +56,7 @@ public class CloudManager : MonoBehaviour
 			{
 				if(Input.GetKeyDown(keys[i]))
 				{
-					objects[i].Stop();
+					objects[i].Play();
 				}
 			}
 
@@ -64,17 +66,18 @@ public class CloudManager : MonoBehaviour
 
 		for(int i = 0; i < objects.Length; ++i)
 		{
-			if(objects[i].GetComponent<ParticleSystem>().isStopped)
+			if(objects[i].musicSource.isPlaying)
 			{
 				if (!Input.GetKey(keys[i])) 
 				{
-					objects[i].Play();
+					objects[i].Stop();
 				}
 			}
 		}
 
 		windEffect.windHeight = windHeight;
 		windEffect.Update();
+
 	}
 
 

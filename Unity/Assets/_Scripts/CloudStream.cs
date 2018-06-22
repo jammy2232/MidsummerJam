@@ -30,9 +30,8 @@ public class CloudStream : MonoBehaviour
 	public void Play()
 	{
 		
-		if (!particles.isPlaying)
+		if (!musicSource.isPlaying)
 		{
-			particles.Play ();
 			volumeDown = false;
 			musicSource.Play ();
 			soundSource.Play();
@@ -44,13 +43,7 @@ public class CloudStream : MonoBehaviour
 
 	public void Stop()
 	{
-
-		if (particles.isPlaying)
-		{
-			particles.Stop ();
-			volumeDown = true;
-		}
-
+		volumeDown = true;
 	}
 
 

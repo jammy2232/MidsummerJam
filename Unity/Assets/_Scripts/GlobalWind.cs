@@ -11,8 +11,11 @@ public class GlobalWind {
 
 	public float windHeight = 10.5f;
 	static public CloudStream[] objects;
+
 	// Update is called once per frame
-	public void Update () {
+	public void Update () 
+	{
+		
 		// Blow some wind at a predefined height
 		foreach (CloudStream obj in objects)
 		{
