@@ -8,6 +8,17 @@ public class CloudManager : MonoBehaviour
 	// Holds all the effects selected tobe placed in the scene
 	public List<Effect> CloudEffects;
 
+	public KeyCode[] keys =
+	{
+		KeyCode.W,
+		KeyCode.E,
+		KeyCode.R,
+		KeyCode.T,
+		KeyCode.Y,
+		KeyCode.U,
+		KeyCode.I,
+		KeyCode.O,
+	};
 	// Use this for initialization
 	void Start () 
 	{
@@ -26,7 +37,7 @@ public class CloudManager : MonoBehaviour
 				effect.effectHolder = Instantiate(effect.ParticleSystem);
 				effect.effectHolder.transform.position = GetPosition (counter, CloudEffects.Count);
 				effect.effectHolder.AddComponent<AudioSource> ();
-
+				effect.KeyToActivate = keys[counter];
 			}
 
 			counter++;
