@@ -9,7 +9,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 280e6fbcbe94a49a1aa981c0ed613694, type: 3}
-  m_Name: Blue
+  m_Name: Test
   m_EditorClassIdentifier: 
-  ParticleSystem: {fileID: 0}
-  KeyToActivate: 0
+  ParticleSystem: {fileID: 1785160652861760, guid: 3da23577989e54bbcb41338f79f2e422,
+    type: 2}
+  KeyToActivate: 119
+  musicClip: {fileID: 8300000, guid: c068eaa9b357e49be8c8a085354a2229, type: 3}
+  pitch: -0.28
+  tempo: 0
+  fadeIn: 0
+  fadeOut: 0
+  effectHolder: {fileID: 0}

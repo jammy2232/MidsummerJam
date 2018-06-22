@@ -303,7 +303,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9175c6d57080c4182bd45fec5bfe9b5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CloudEffects: []
+  CloudEffects:
+  - {fileID: 11400000, guid: d31296b2a352f41b386b86d068dd5fea, type: 2}
+  - {fileID: 11400000, guid: 941297e551df547a9bc83af7a2b46b9f, type: 2}
 --- !u!4 &939386906
 Transform:
   m_ObjectHideFlags: 0
