@@ -125,7 +125,6 @@ public class CloudManager : MonoBehaviour
 			var main = obj.particles.main;
 			main.startSize = largest[0]/total * 30.0f;
 			main.startSpeed = largest[1]/total * 30.0f;
-			main.startRotation = largest[2]/total * 5.0f;
 			main.startColor = newColour;
 		}
 
