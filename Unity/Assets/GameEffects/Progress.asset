@@ -9,13 +9,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 280e6fbcbe94a49a1aa981c0ed613694, type: 3}
-  m_Name: Test 1
+  m_Name: Progress
   m_EditorClassIdentifier: 
   ParticleSystem: {fileID: 1511293861287806, guid: bbb45b311defcc14fad3ecf008458861,
     type: 2}
-  musicMixer: {fileID: 243724819356036384, guid: 5d2923c33df2a4d14a3f7be3a9ce4528,
+  musicMixer: {fileID: 243401376507561860, guid: 5d2923c33df2a4d14a3f7be3a9ce4528,
     type: 2}
-  musicClip: {fileID: 8300000, guid: 26e379332ded34d14afdce3ea17b4536, type: 3}
-  soundMixer: {fileID: 243724819356036384, guid: 5d2923c33df2a4d14a3f7be3a9ce4528,
-    type: 2}
+  RequiredSnapShot: {fileID: 24500006, guid: 5d2923c33df2a4d14a3f7be3a9ce4528, type: 2}
+  musicClip: {fileID: 8300000, guid: c371e5dd5c36148cca459627baed6bbf, type: 3}
+  soundMixer: {fileID: 0}
   soundsClip: {fileID: 0}

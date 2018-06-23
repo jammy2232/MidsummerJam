@@ -151,7 +151,7 @@ public class CloudManager : MonoBehaviour
 		float xpositions = -(0.5f * ScreenWidthUnits) + ((float)position + 1.0f) * ScreenWidthUnits / denomimator;
 
 		// Return the positions relative to the number of systems
-		return new Vector3(xpositions, 1.0f, 0.0f);
+		return new Vector3(xpositions, -2.0f, 0.0f);
 	
 	}
 
