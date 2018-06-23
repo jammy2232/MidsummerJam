@@ -19,3 +19,5 @@ MonoBehaviour:
   musicClip: {fileID: 8300000, guid: c371e5dd5c36148cca459627baed6bbf, type: 3}
   soundMixer: {fileID: 0}
   soundsClip: {fileID: 0}
+  FadeInRate: 0.1
+  FadeOutRate: 0.005

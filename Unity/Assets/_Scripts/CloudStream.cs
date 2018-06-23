@@ -14,6 +14,8 @@ public class CloudStream : MonoBehaviour
 	public AudioSource soundSource;
 
 	public AudioMixerSnapshot snapshot;
+	public float FadeIn;
+	public float FadeOut;
 	private bool volumeDown = true;
 
 	public void Init()
@@ -61,7 +63,7 @@ public class CloudStream : MonoBehaviour
 		if (volumeDown)
 		{
 			// Volume in Unity is a float between 0 and 1
-			musicSource.volume = Mathf.Clamp (musicSource.volume - 0.1f * Time.deltaTime, 0.0f, 1.0f);
+			musicSource.volume = Mathf.Clamp (musicSource.volume - FadeOut * Time.deltaTime, 0.0f, 1.0f);
 
 			// Remember James floats are not precise so don't compare to 0.0f
 			// When volume is super low it is now safe to stop the sound
@@ -72,7 +74,7 @@ public class CloudStream : MonoBehaviour
 		}
 		else
 		{
-			musicSource.volume = Mathf.Clamp (musicSource.volume + 0.005f * Time.deltaTime, 0.0f, 1.0f);
+			musicSource.volume = Mathf.Clamp (musicSource.volume + FadeIn * Time.deltaTime, 0.0f, 1.0f);
 		}
 	}
 }

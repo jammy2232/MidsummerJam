@@ -58,6 +58,8 @@ public class Effect : ScriptableObject {
 		newEffect.AddComponent<CloudStream>();
 		newEffect.GetComponent<CloudStream>().snapshot = RequiredSnapShot;
 		newEffect.GetComponent<CloudStream>().Init();
+		newEffect.GetComponent<CloudStream> ().FadeIn = FadeInRate;
+		newEffect.GetComponent<CloudStream> ().FadeOut = FadeOutRate;
 
 		// Return the gameObject Reference 
 		return newEffect.GetComponent<CloudStream>();
