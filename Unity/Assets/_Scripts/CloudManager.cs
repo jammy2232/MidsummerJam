@@ -36,13 +36,20 @@ public class CloudManager : MonoBehaviour
 	// see AudioListener.GetSpectrumData for all of the constraints
 	public int FrequencyBuckets = 64;
 
+	// Place to store the specturum Data Analysis
+	private float[] spectrum;
+
 	// Use this for initialization
 	void Start() 
 	{
 		// Create a array to hold the number of possible effects
 		objects = new CloudStream[CloudEffects.Count]; 
 
+		spectrum = new float[FrequencyBuckets];
+
+		// temp counter
 		int counter = 0;
+
 		foreach(var effect in CloudEffects)
 		{
 			// Equally space all the effects across the screen and init them
@@ -82,9 +89,7 @@ public class CloudManager : MonoBehaviour
 			}
 		}
 
-		float[] spectrum = new float[FrequencyBuckets];
-
-		AudioListener.GetSpectrumData(spectrum, 0, FFTWindow.Rectangular);
+		AudioListener.GetSpectrumData(spectrum, 0, FFTWindow.Triangle);
 
 		int[] largest =
 		{
@@ -110,14 +115,17 @@ public class CloudManager : MonoBehaviour
 				}
 			}
 		}
-
-		float total = largest[0] + largest[1] + largest[2] + 1;
+			
+		float total = largest[0] + largest[1] + largest[2] + 0.000001f;
 
 		Color newColour = new Color(largest[0]/total, largest[1]/total, largest[2]/total, 1.0f);
 
 		foreach (var obj in objects)
 		{
 			var main = obj.particles.main;
+			main.startSize = largest[0]/total * 30.0f;
+			main.startSpeed = largest[1]/total * 30.0f;
+			main.startRotation = largest[2]/total * 5.0f;
 			main.startColor = newColour;
 		}
 
@@ -142,13 +150,18 @@ public class CloudManager : MonoBehaviour
 		// the y and z positions are fixed as the visuals are 3d 
 		float denomimator = totalNumberofSystems + 1;
 
+
+		// Define a random height 
+		float randomHeight = Random.Range(-2.0f, 0.0f);
+
 		if (denomimator == 0.0f)
-			return new Vector3 (0.0f, 0.0f, 0.0f);
+			return new Vector3 (0.0f, randomHeight, 0.0f);
 
 		// Calculate the positions 
 		float xpositions = -(0.5f * ScreenWidthUnits) + ((float)position + 1.0f) * ScreenWidthUnits / denomimator;
 
 		// Return the positions relative to the number of systems
-		return new Vector3(xpositions, -2.0f, 0.0f);
+		return new Vector3(xpositions, randomHeight, 0.0f);
+	
 	}
 }
