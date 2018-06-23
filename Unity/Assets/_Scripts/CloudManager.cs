@@ -34,7 +34,7 @@ public class CloudManager : MonoBehaviour
 	// This is then used to change the colour of particles. To make the colour changes
 	// more gradual you can increase the number of buckets. This must be a multiple of 2
 	// see AudioListener.GetSpectrumData for all of the constraints
-	public const int FrequencyBuckets = 64;
+	public const int FrequencyBuckets = 1024;
 
 	// Place to store the specturum for Frequency Data Analysis
 	private float[] spectrum;
@@ -59,6 +59,10 @@ public class CloudManager : MonoBehaviour
 		windEffect = new GlobalWind(objects);
 		// To save on GC, only allocate this once
 		spectrum = new float[FrequencyBuckets];
+
+		// Activate the first song to start off the experience
+		objects[0].Play();
+
 	}
 	
 	// Update is called once per frame
@@ -70,68 +74,106 @@ public class CloudManager : MonoBehaviour
 		{
 			for (int i = 0; i < objects.Length; ++i)
 			{
-				if (Input.GetKeyDown(keys[i]))
-				{
-					objects[i].Play();
+				if (Input.GetKeyDown (keys [i])) {
+					objects [i].Play ();
+				} else {
+					objects [i].Stop ();
 				}
 			}
+		}
+
+		// Escape the Game
+		if (Input.GetKeyDown (KeyCode.Escape)) 
+		{
+			Application.Quit ();
 		}
 
 		// if an input is released check what effects should be deactivated
-		for (int i = 0; i < objects.Length; ++i)
-		{
-			if (objects[i].musicSource.isPlaying)
-			{
-				if (!Input.GetKey(keys[i]))
-				{
-					objects[i].Stop();
-				}
-			}
-		}
+//		for (int i = 0; i < objects.Length; ++i)
+//		{
+//			if (objects[i].musicSource.isPlaying)
+//			{
+//				if (!Input.GetKey(keys[i]))
+//				{
+//					objects[i].Stop();
+//				}
+//			}
+//		}
 
 		// Split frequencies into 3 segments for RGB of colour and get the greatest component frequency
-		int[] largestFrequencyBucket     = { 0,    0,    0 };
-		float[] magnitudeOfLargestBucket = { 0.0f, 0.0f, 0.0f };
+		int[] largestFrequencyBucket     = { 0,    0,    0,		0, 		0, 		0 };
+		float[] magnitudeOfLargestBucket = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
 		PerformFrequencyAnalysis(largestFrequencyBucket, magnitudeOfLargestBucket);
 
 		// Normalising factor to emphasise change (+0.00001 to prevent divide by zero)
 		float total = largestFrequencyBucket[0] + largestFrequencyBucket[1] + largestFrequencyBucket[2] + 0.000001f;
 
+		// Normalising factor to emphasise change on the magnitudes
+		float totalMag = magnitudeOfLargestBucket[0] + magnitudeOfLargestBucket[1] + magnitudeOfLargestBucket[2];
+		float completeTotalMag = totalMag + magnitudeOfLargestBucket [3] + magnitudeOfLargestBucket [4] + magnitudeOfLargestBucket [5];
+
+		// Debug.Log (completeTotalMag);
+
 		// Create a new particle colour based on the frequency
-		Color newColour = new Color(
-			largestFrequencyBucket[0] / total,
-			largestFrequencyBucket[1] / total,
-			largestFrequencyBucket[2] / total,
-			1.0f);
+		Color newColour;
+		if(completeTotalMag < 0.00001f)
+		{
+			newColour = Color.black;
+		}
+		else
+		{
+			newColour = new Color(
+				largestFrequencyBucket[0] / total,
+				largestFrequencyBucket[1] / total,
+				largestFrequencyBucket[2] / total,
+				1.0f);
+		}
 
 		foreach (var obj in objects)
 		{
 			var particleEmitter	       = obj.particles.main;
-			particleEmitter.startSize  = largestFrequencyBucket[0] / total * 30.0f;
-			particleEmitter.startSpeed = largestFrequencyBucket[1] / total * 30.0f;
+			// particleEmitter.startSize  =  5.0f + magnitudeOfLargestBucket[0] * 50.0f;
+			// particleEmitter.startSpeed = 3.0f + magnitudeOfLargestBucket[1] * 15.0f;
+			particleEmitter.startSize  =  5.0f + completeTotalMag * 60.0f;
+			particleEmitter.startSpeed = 3.0f + magnitudeOfLargestBucket[1] * 15.0f;
 			particleEmitter.startColor = newColour;
+
+
+			var particleEmissionSystem = obj.particles.emission;
+			particleEmissionSystem.rateOverTime = completeTotalMag * 50.0f;
+
 		}
 
-		windEffect.windDirection = (largestFrequencyBucket[0] - largestFrequencyBucket[1])/total;
-		windEffect.windHeight = windHeight;
-		windEffect.Update();
+		//windEffect.windDirection = (magnitudeOfLargestBucket[0] - magnitudeOfLargestBucket[1])/totalMag;
+		//windEffect.windHeight = windHeight;
+		//windEffect.Update();
+
+//		// Update the camera background colour
+//		Camera.main.backgroundColor = new Color(
+//			Mathf.Clamp((largestFrequencyBucket[2]),0.0f, 0.1f),
+//			Mathf.Clamp((largestFrequencyBucket[3]),0.0f, 0.1f),
+//			Mathf.Clamp((largestFrequencyBucket[4]),0.0f, 0.1f),
+//			1.0f);
+
+
 	}
 
 	void PerformFrequencyAnalysis(int[] largestFrequencyBucket, float[] magnitudeOfLargestBucket)
 	{
 		AudioListener.GetSpectrumData(spectrum, 0, FFTWindow.Triangle);
 
-		for (int j = 0; j < 3; ++j)
+		for (int j = 0; j < 6; ++j)
 		{
-			for (int i = j * FrequencyBuckets / 3; i < (j + 1) * FrequencyBuckets / 3; ++i)
+			for (int i = j * FrequencyBuckets / 6; i < (j + 1) * FrequencyBuckets / 6; ++i)
 			{
 				if (magnitudeOfLargestBucket[j] < spectrum[i])
 				{
-					largestFrequencyBucket[j] = i - j * FrequencyBuckets / 3;
+					largestFrequencyBucket[j] = i - j * FrequencyBuckets / 6;
 					magnitudeOfLargestBucket[j] = spectrum[i];
 				}
 			}
 		}
+
 	}
 
 	// Generate a start position for particles so that they are equally spaced for the

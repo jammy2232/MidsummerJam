@@ -17,8 +17,8 @@ MonoBehaviour:
     type: 2}
   RequiredSnapShot: {fileID: 245370711485928996, guid: 5d2923c33df2a4d14a3f7be3a9ce4528,
     type: 2}
-  musicClip: {fileID: 8300000, guid: c068eaa9b357e49be8c8a085354a2229, type: 3}
+  musicClip: {fileID: 8300000, guid: 2bc84ab28ef594b9d803af5f2b8c74b9, type: 3}
   soundMixer: {fileID: 0}
   soundsClip: {fileID: 0}
   FadeInRate: 0.1
-  FadeOutRate: 0.005
+  FadeOutRate: 0.05

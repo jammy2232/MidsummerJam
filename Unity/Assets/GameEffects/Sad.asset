@@ -21,4 +21,4 @@ MonoBehaviour:
   soundMixer: {fileID: 0}
   soundsClip: {fileID: 0}
   FadeInRate: 0.1
-  FadeOutRate: 0.0005
+  FadeOutRate: 0.005

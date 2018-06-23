@@ -33,13 +33,28 @@ public class GlobalWind
 			// Change only the particles that are alive
 			for(var i = 0; i < streamsParticles.Length; ++i)
 			{
-				if (streamsParticles[i].position.z > windHeight)
-				{
+				if (streamsParticles [i].position.z > windHeight) {
 					// We add/remove more x velocity over the lifetime of the particle
 					// this makes it a bit more realistic compared to sticking to the
 					// one x velocity. Remember also there can be x, y, z velocity on the particles
 					// from the particle generator
-					streamsParticles[i].velocity += new Vector3(Mathf.Clamp(windDirection, -1.0f, 1.0f), 0.0f, 0.0f) * 0.5f;
+					if (streamsParticles [i].velocity.x < 0.0f) {
+						streamsParticles [i].velocity = new Vector3 (Mathf.Clamp (Mathf.Abs (windDirection), -1.0f, 1.0f) * -2.0f,
+							streamsParticles [i].velocity.y, streamsParticles [i].velocity.z);
+
+					} else if (streamsParticles [i].velocity.x > 0.0f) {
+						streamsParticles [i].velocity = new Vector3 (Mathf.Clamp (Mathf.Abs (windDirection), -1.0f, 1.0f) * 2.0f,
+							streamsParticles [i].velocity.y, streamsParticles [i].velocity.z);
+
+					} 
+					//				else 
+					//				{
+					// streamsParticles[i].velocity = new Vector3(Mathf.Clamp(windDirection, -1.0f, 1.0f) * 2.0f,
+					// streamsParticles[i].velocity.y, streamsParticles[i].velocity.z);
+//					}
+
+
+
 				}
 			}
 
