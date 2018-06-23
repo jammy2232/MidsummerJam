@@ -24,6 +24,7 @@ public class CloudManager : MonoBehaviour
 	private GlobalWind windEffect;
 	public float windHeight = 2.5f;
 	public float windDirection = -1.0f;
+	public int FrequecnyBuckets = 64;
 
 	// Use this for initialization
 	void Start() 
@@ -75,11 +76,7 @@ public class CloudManager : MonoBehaviour
 			}
 		}
 
-		windEffect.windDirection = windDirection;
-		windEffect.windHeight = windHeight;
-		windEffect.Update();
-
-		float[] spectrum = new float[256];
+		float[] spectrum = new float[FrequecnyBuckets];
 
 		AudioListener.GetSpectrumData(spectrum, 0, FFTWindow.Rectangular);
 
@@ -95,24 +92,40 @@ public class CloudManager : MonoBehaviour
 			0.0f,
 			0.0f
 		};
+
 		for (int j = 0; j < 3; ++j)
 		{
-			for (int i = j * 256 / 3; i < (j + 1) * 256 / 3; ++i)
+			for (int i = j * FrequecnyBuckets / 3; i < (j + 1) * FrequecnyBuckets / 3; ++i)
 			{
 				if (large_f[j] < spectrum[i])
 				{
-					largest[j] = i;
+					largest[j] = i - j*FrequecnyBuckets/3;
 					large_f[j] = spectrum[i];
 				}
 			}
 		}
-		
-		Color newColour = new Color(largest[0] / 10.0f, largest[1] / 10.0f, largest[2] / 10.0f, 1.0f);
+
+		//float tempValue = (float)FrequecnyBuckets/3.0f;
+
+		//for(int i = 0; i < 3; i++){
+		//	largest[i] /= (int)tempValue;
+		//}
+
+		float total = largest[0] + largest[1] + largest[2] + 1;
+
+		Color newColour = new Color(largest[0]/total, largest[1]/total, largest[2]/total, 1.0f);
+
 		foreach (var obj in objects)
 		{
 			var main = obj.particles.main;
 			main.startColor = newColour;
 		}
+
+
+		windEffect.windDirection = (largest[0] - largest[1])/total;
+		windEffect.windHeight = windHeight;
+		windEffect.Update();
+
 	}
 
 
@@ -126,7 +139,7 @@ public class CloudManager : MonoBehaviour
 
 		// Catch for one system
 		if (totalNumberofSystems == 1)
-			return new Vector3 (0.0f, -5.0f, 0.0f);
+			return new Vector3 (0.0f, 0.0f, 0.0f);
 
 		// the y and z positions are fixed as the visuals are 3d 
 		float denomimator = totalNumberofSystems + 1;
@@ -138,7 +151,7 @@ public class CloudManager : MonoBehaviour
 		float xpositions = -(0.5f * ScreenWidthUnits) + ((float)position + 1.0f) * ScreenWidthUnits / denomimator;
 
 		// Return the positions relative to the number of systems
-		return new Vector3(xpositions, -5.0f, 0.0f);
+		return new Vector3(xpositions, 1.0f, 0.0f);
 	
 	}
 
