@@ -52,15 +52,15 @@ public class CloudStream : MonoBehaviour
 	{
 
 		if (volumeDown) {
-			musicSource.volume -= Mathf.Clamp (0.1f * Time.deltaTime, 0.0f, 1.0f);
+			musicSource.volume = Mathf.Clamp (musicSource.volume - 0.1f * Time.deltaTime, 0.0f, 1.0f);
 
-			if (musicSource.volume < 0.0f) {
+			if (musicSource.volume < 0.00001f) {
 				musicSource.Stop ();
 			}
 
 		} else 
 		{
-			musicSource.volume += Mathf.Clamp (0.05f * Time.deltaTime, 0.0f, 1.0f);
+			musicSource.volume = Mathf.Clamp (musicSource.volume + 0.005f * Time.deltaTime, 0.0f, 1.0f);
 		}
 			
 	}

@@ -17,6 +17,8 @@ public class Effect : ScriptableObject {
 	public AudioClip musicClip;
 	public AudioMixerGroup soundMixer;
 	public AudioClip soundsClip;
+	public float FadeInRate;
+	public float FadeOutRate;
 
 	// Instanciate the effect setup to work
 	public CloudStream SpawnEffect(Vector3 SpawnLocation)
