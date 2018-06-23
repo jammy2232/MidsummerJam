@@ -5,9 +5,11 @@ using UnityEngine;
 public class CloudManager : MonoBehaviour 
 {
 
-	// Holds all the effects selected tobe placed in the scene
+	// Holds all the effects selected to be placed in the scene
 	public List<Effect> CloudEffects;
 
+	// This array should be the same length as num cloud effects
+	// each key will be tied to a sound
 	public KeyCode[] keys =
 	{
 		KeyCode.W,
@@ -22,9 +24,17 @@ public class CloudManager : MonoBehaviour
 
 	private CloudStream[] objects;
 	private GlobalWind windEffect;
+
+	// Anything above this height will be affected by wind.
 	public float windHeight = 2.5f;
+	// This also controls how powerful the wind is
 	public float windDirection = -1.0f;
-	public int FrequecnyBuckets = 64;
+
+	// We perform fourier transforms on the audio to get the frequency of the audio.
+	// This is then used to change the colour of particles. To make the colour changes
+	// more gradual you can increase the number of buckets. This must be a multiple of 2
+	// see AudioListener.GetSpectrumData for all of the constraints
+	public int FrequencyBuckets = 64;
 
 	// Use this for initialization
 	void Start() 
@@ -32,16 +42,15 @@ public class CloudManager : MonoBehaviour
 		// Create a array to hold the number of possible effects
 		objects = new CloudStream[CloudEffects.Count]; 
 
-		// temp counter
 		int counter = 0;
-
-		// Check that all the Effects are valid
 		foreach(var effect in CloudEffects)
 		{
-			objects [counter] = effect.SpawnEffect(GetStartParticlePosition(counter, CloudEffects.Count));
+			// Equally space all the effects across the screen and init them
+			objects[counter] = effect.SpawnEffect(GetStartParticlePosition(counter, CloudEffects.Count));
 			counter++;
 		}
 
+		// In an ideal world this would have been more Unityy but I'm used to C++...
 		windEffect = new GlobalWind(objects);
 	}
 
@@ -52,7 +61,6 @@ public class CloudManager : MonoBehaviour
 		// if an input is fired check what effects should be activated
 		if (Input.anyKeyDown)
 		{
-
 			for (int i = 0; i < objects.Length; ++i)
 			{
 				if (Input.GetKeyDown(keys[i]))
@@ -60,11 +68,9 @@ public class CloudManager : MonoBehaviour
 					objects[i].Play();
 				}
 			}
-
 		}
 
 		// if an input is released check what effects should be deactivated
-
 		for (int i = 0; i < objects.Length; ++i)
 		{
 			if (objects[i].musicSource.isPlaying)
@@ -76,7 +82,7 @@ public class CloudManager : MonoBehaviour
 			}
 		}
 
-		float[] spectrum = new float[FrequecnyBuckets];
+		float[] spectrum = new float[FrequencyBuckets];
 
 		AudioListener.GetSpectrumData(spectrum, 0, FFTWindow.Rectangular);
 
@@ -95,21 +101,15 @@ public class CloudManager : MonoBehaviour
 
 		for (int j = 0; j < 3; ++j)
 		{
-			for (int i = j * FrequecnyBuckets / 3; i < (j + 1) * FrequecnyBuckets / 3; ++i)
+			for (int i = j * FrequencyBuckets / 3; i < (j + 1) * FrequencyBuckets / 3; ++i)
 			{
 				if (large_f[j] < spectrum[i])
 				{
-					largest[j] = i - j*FrequecnyBuckets/3;
+					largest[j] = i - j*FrequencyBuckets/3;
 					large_f[j] = spectrum[i];
 				}
 			}
 		}
-
-		//float tempValue = (float)FrequecnyBuckets/3.0f;
-
-		//for(int i = 0; i < 3; i++){
-		//	largest[i] /= (int)tempValue;
-		//}
 
 		float total = largest[0] + largest[1] + largest[2] + 1;
 
@@ -121,18 +121,16 @@ public class CloudManager : MonoBehaviour
 			main.startColor = newColour;
 		}
 
-
 		windEffect.windDirection = (largest[0] - largest[1])/total;
 		windEffect.windHeight = windHeight;
 		windEffect.Update();
-
 	}
 
 
-	// Function to return the position of a particle system based the number of systems and it's place in the list
+	// Generate a start position for particles so that they are equally spaced for the
+	// number of particle generators.
 	Vector3 GetStartParticlePosition(int position, int totalNumberofSystems)
 	{
-
 		// Get the main Camerea W value
 		float ScreenHeightUnits = Camera.main.orthographicSize * 2.0f;
 		float ScreenWidthUnits = ScreenHeightUnits * Screen.width / Screen.height;
@@ -152,8 +150,5 @@ public class CloudManager : MonoBehaviour
 
 		// Return the positions relative to the number of systems
 		return new Vector3(xpositions, -2.0f, 0.0f);
-	
 	}
-
-
 }
