@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class StartMenu : MonoBehaviour {
 
+	void Start()
+	{
+		// Hide the cursor
+		Cursor.visible = false;
+	}
+
 	// Update is called once per frame
 	void Update ()
 	{

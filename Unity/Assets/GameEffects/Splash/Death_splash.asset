@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 280e6fbcbe94a49a1aa981c0ed613694, type: 3}
+  m_Name: Death_splash
+  m_EditorClassIdentifier: 
+  ParticleSystem: {fileID: 1456035348240072, guid: d471296b6019d5549b863f9c7dbe34fb,
+    type: 2}
+  musicMixer: {fileID: 243916667679737812, guid: 5d2923c33df2a4d14a3f7be3a9ce4528,
+    type: 2}
+  RequiredSnapShot: {fileID: 245442360435220032, guid: 5d2923c33df2a4d14a3f7be3a9ce4528,
+    type: 2}
+  musicClip: {fileID: 8300000, guid: d69823ab8eb894cc89a273c120f88141, type: 3}
+  soundMixer: {fileID: 0}
+  soundsClip: {fileID: 0}
+  FadeInRate: 0.1
+  FadeOutRate: 0.05

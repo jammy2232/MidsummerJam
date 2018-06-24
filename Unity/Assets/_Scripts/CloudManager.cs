@@ -50,9 +50,6 @@ public class CloudManager : MonoBehaviour
 		// Create a array to hold the number of possible effects
 		objects = new CloudStream[CloudEffects.Count]; 
 
-		// Hide the cursor
-		Cursor.visible = false;
-
 		// temp counter
 		int counter = 0;
 
@@ -80,8 +77,8 @@ public class CloudManager : MonoBehaviour
 		// update the timer
 		timer += Time.deltaTime;
 
-		// Hard limit of 10 minutes (mins * seconds * milliseconds)
-		if (timer > (10.0f * 60.0f * 1000.0f))
+		// Hard limit of 10 minutes (mins * seconds)
+		if (timer > (10.0f * 60.0f))
 		{
 			SceneManager.LoadScene ("MainMenu", LoadSceneMode.Single);
 		}
@@ -102,7 +99,7 @@ public class CloudManager : MonoBehaviour
 		// Escape the Game
 		if (Input.GetKeyDown (KeyCode.Escape)) 
 		{
-			Application.Quit ();
+			SceneManager.LoadScene ("MainMenu", LoadSceneMode.Single);
 		}
 
 		// if an input is released check what effects should be deactivated

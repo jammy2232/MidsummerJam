@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 280e6fbcbe94a49a1aa981c0ed613694, type: 3}
+  m_Name: Change_grapes
+  m_EditorClassIdentifier: 
+  ParticleSystem: {fileID: 1785160652861760, guid: 318b2a8ef1612d745af3aad486da7727,
+    type: 2}
+  musicMixer: {fileID: 243742144207163408, guid: 5d2923c33df2a4d14a3f7be3a9ce4528,
+    type: 2}
+  RequiredSnapShot: {fileID: 245370711485928996, guid: 5d2923c33df2a4d14a3f7be3a9ce4528,
+    type: 2}
+  musicClip: {fileID: 8300000, guid: 2bc84ab28ef594b9d803af5f2b8c74b9, type: 3}
+  soundMixer: {fileID: 0}
+  soundsClip: {fileID: 0}
+  FadeInRate: 0.1
+  FadeOutRate: 0.05
