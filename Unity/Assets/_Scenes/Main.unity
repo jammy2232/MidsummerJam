@@ -310,10 +310,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7f9c68000e17f4d06976c61f0fe89742, type: 2}
   - {fileID: 11400000, guid: c353c33b4fb7a4730af7dcf4632598e9, type: 2}
   - {fileID: 11400000, guid: f08e10275c53341528ad39f8f448bfcc, type: 2}
-  keys: 770000006100000073000000640000006600000067000000
   HeightAdjust: -2.5
-  windHeight: 2.5
+  keys: 770000006100000073000000640000006600000067000000
+  addWind: 1
+  windHeight: 8
   windDirection: -1
+  baseSize: 3.5
+  sizeMultiplier: 30
+  baseSpeed: 1
+  speedMultiplier: 60
+  speedFrequencyBand: 0
+  rateMultiplier: 50
 --- !u!4 &939386906
 Transform:
   m_ObjectHideFlags: 0
