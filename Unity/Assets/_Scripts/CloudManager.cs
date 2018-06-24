@@ -62,6 +62,10 @@ public class CloudManager : MonoBehaviour
 	// Wind application object
 	private GlobalWind windEffect;
 
+	// Temp fix
+	int currentSong = 0;
+	public float timerinput = 0.0f;
+
 	// Use this for initialization
 	void Start() 
 	{
@@ -94,6 +98,7 @@ public class CloudManager : MonoBehaviour
 
 		// update the timer
 		timer += Time.deltaTime;
+		timerinput += Time.deltaTime;
 
 		// Hard limit of 10 minutes (mins * seconds)
 		if (timer > (10.0f * 60.0f))
@@ -104,14 +109,42 @@ public class CloudManager : MonoBehaviour
 		// if an input is fired check what effects should be activated
 		if (Input.anyKeyDown)
 		{
+
+			// hardcode Fix
+			if (Input.GetKeyDown (KeyCode.D) && Input.GetKeyDown (KeyCode.G) && Input.GetKeyDown (KeyCode.F) && timerinput > 0.3f) {
+
+
+				currentSong -= 1;
+
+				timerinput = 0.0f;
+
+			} else
+			{
+
+				currentSong += 1;
+
+				timerinput = 0.0f;
+
+
+			}
+
+			if (currentSong > 5) {
+				currentSong = 0;
+			} else if (currentSong < 0) {
+				currentSong = 5;
+			}
+
+
 			for (int i = 0; i < objects.Length; ++i)
 			{
-				if (Input.GetKeyDown (keys [i])) {
-					objects [i].Play ();
+				if (i == currentSong) {
+					objects [currentSong].Play ();
 				} else {
 					objects [i].Stop ();
 				}
 			}
+
+
 		}
 
 		// Escape the Game
