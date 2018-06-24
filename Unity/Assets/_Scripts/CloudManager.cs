@@ -24,6 +24,7 @@ public class CloudManager : MonoBehaviour
 
 	private CloudStream[] objects;
 	private GlobalWind windEffect;
+	public float HeightAdjust = 0.0f;
 
 	// Anything above this height will be affected by wind.
 	public float windHeight = 2.5f;
@@ -44,6 +45,9 @@ public class CloudManager : MonoBehaviour
 	{
 		// Create a array to hold the number of possible effects
 		objects = new CloudStream[CloudEffects.Count]; 
+
+		// Hide the cursor
+		Cursor.visible = false;
 
 		// temp counter
 		int counter = 0;
@@ -196,13 +200,13 @@ public class CloudManager : MonoBehaviour
 		float randomHeight = Random.Range(-2.0f, 0.0f);
 
 		if (denomimator == 0.0f)
-			return new Vector3 (0.0f, randomHeight, 0.0f);
+			return new Vector3 (0.0f, randomHeight, 10.0f);
 
 		// Calculate the positions 
 		float xpositions = -(0.5f * ScreenWidthUnits) + ((float)position + 1.0f) * ScreenWidthUnits / denomimator;
 
 		// Return the positions relative to the number of systems
-		return new Vector3(xpositions, randomHeight, 0.0f);
+		return new Vector3(xpositions, HeightAdjust + randomHeight, 10.0f);
 	
 	}
 }

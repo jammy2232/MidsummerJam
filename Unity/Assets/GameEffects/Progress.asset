@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 280e6fbcbe94a49a1aa981c0ed613694, type: 3}
   m_Name: Progress
   m_EditorClassIdentifier: 
-  ParticleSystem: {fileID: 1511293861287806, guid: bbb45b311defcc14fad3ecf008458861,
+  ParticleSystem: {fileID: 1437332182768226, guid: 0eab3b1c2ad5438428c3e148219325ea,
     type: 2}
   musicMixer: {fileID: 243401376507561860, guid: 5d2923c33df2a4d14a3f7be3a9ce4528,
     type: 2}
