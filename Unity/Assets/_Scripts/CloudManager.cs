@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CloudManager : MonoBehaviour 
 {
@@ -30,6 +31,9 @@ public class CloudManager : MonoBehaviour
 	public float windHeight = 2.5f;
 	// This also controls how powerful the wind is
 	public float windDirection = -1.0f;
+
+	// This is a timer to reset the game after 10 minutes of no input 
+	private float timer = 0.0f;
 
 	// We perform fourier transforms on the audio to get the frequency of the audio.
 	// This is then used to change the colour of particles. To make the colour changes
@@ -72,6 +76,15 @@ public class CloudManager : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+
+		// update the timer
+		timer += Time.deltaTime;
+
+		// Hard limit of 10 minutes (mins * seconds * milliseconds)
+		if (timer > (10.0f * 60.0f * 1000.0f))
+		{
+			SceneManager.LoadScene ("MainMenu", LoadSceneMode.Single);
+		}
 
 		// if an input is fired check what effects should be activated
 		if (Input.anyKeyDown)
