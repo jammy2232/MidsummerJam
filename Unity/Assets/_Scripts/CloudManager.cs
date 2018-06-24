@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class CloudManager : MonoBehaviour 
 {
-
+	[Header("Cloud Types and Controls")]
 	// Holds all the effects selected to be placed in the scene
 	public List<Effect> CloudEffects;
+
+	// Adjust the height of the particles effects (This is applied to all particle systems)
+	public float HeightAdjust = 0.0f;
 
 	// This array should be the same length as num cloud effects
 	// each key will be tied to a sound
@@ -23,10 +26,9 @@ public class CloudManager : MonoBehaviour
 		KeyCode.O,
 	};
 
-	private CloudStream[] objects;
-	private GlobalWind windEffect;
-	public float HeightAdjust = 0.0f;
-
+	[Header("Wind Settings")]
+	// Bool to determine if to add wind effects
+	public bool addWind = false;
 	// Anything above this height will be affected by wind.
 	public float windHeight = 2.5f;
 	// This also controls how powerful the wind is
@@ -39,10 +41,26 @@ public class CloudManager : MonoBehaviour
 	// This is then used to change the colour of particles. To make the colour changes
 	// more gradual you can increase the number of buckets. This must be a multiple of 2
 	// see AudioListener.GetSpectrumData for all of the constraints
+	[Header("Frequency Analysis Settings")]
 	public const int FrequencyBuckets = 1024;
+
+	[Header("Visulaisation settings")]
+	public float baseSize = 5.0f;
+	public float sizeMultiplier = 60.0f;
+	public float baseSpeed = 5.0f;
+	public float speedMultiplier = 60.0f;
+	[Range(0, 5)]
+	public int speedFrequencyBand = 0;
+	public float rateMultiplier = 50.0f;
 
 	// Place to store the specturum for Frequency Data Analysis
 	private float[] spectrum;
+
+	// Pribate Variables to hold reference to object list
+	private CloudStream[] objects;
+
+	// Wind application object
+	private GlobalWind windEffect;
 
 	// Use this for initialization
 	void Start() 
@@ -148,19 +166,22 @@ public class CloudManager : MonoBehaviour
 			var particleEmitter	       = obj.particles.main;
 			// particleEmitter.startSize  =  5.0f + magnitudeOfLargestBucket[0] * 50.0f;
 			// particleEmitter.startSpeed = 3.0f + magnitudeOfLargestBucket[1] * 15.0f;
-			particleEmitter.startSize  =  5.0f + completeTotalMag * 60.0f;
-			particleEmitter.startSpeed = 3.0f + magnitudeOfLargestBucket[1] * 15.0f;
+			particleEmitter.startSize  =  baseSize + completeTotalMag * sizeMultiplier;
+			particleEmitter.startSpeed = baseSpeed + magnitudeOfLargestBucket[speedFrequencyBand] * speedMultiplier;
 			particleEmitter.startColor = newColour;
 
 
 			var particleEmissionSystem = obj.particles.emission;
-			particleEmissionSystem.rateOverTime = completeTotalMag * 50.0f;
+			particleEmissionSystem.rateOverTime = completeTotalMag * rateMultiplier;
 
 		}
 
-		//windEffect.windDirection = (magnitudeOfLargestBucket[0] - magnitudeOfLargestBucket[1])/totalMag;
-		//windEffect.windHeight = windHeight;
-		//windEffect.Update();
+		if (addWind)
+		{
+			windEffect.windDirection = (magnitudeOfLargestBucket [0] - magnitudeOfLargestBucket [1]) / totalMag;
+			windEffect.windHeight = windHeight;
+			windEffect.Update ();
+		}
 
 //		// Update the camera background colour
 //		Camera.main.backgroundColor = new Color(

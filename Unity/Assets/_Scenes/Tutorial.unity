@@ -483,7 +483,10 @@ MonoBehaviour:
     Use the puppet to touch the life paddles to experience change.
 
 
-    Observe, explore and enjoy the experience. '
+    Observe, explore and enjoy the experience.
+
+
+    Touch a life paddle  to begin your journey.'
 --- !u!222 &1968096289
 CanvasRenderer:
   m_ObjectHideFlags: 0
