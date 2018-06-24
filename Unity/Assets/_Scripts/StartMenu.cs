@@ -8,7 +8,13 @@ public class StartMenu : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		
+
+		// Quit
+		if (Input.GetKeyDown (KeyCode.Escape))
+		{
+			Application.Quit ();
+		}
+
 		// Check if any key is pressed
 		if (Input.anyKeyDown)
 		{
